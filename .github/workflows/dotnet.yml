@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - '*'
     paths-ignore:
       - '**.md'
 
@@ -23,6 +25,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Set tag if master
+        if: github.event.action == 'branches'
+        run: echo "TAG=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+        
+      - name: Set tag if tag
+        if: github.event.action == 'tags'
+        run: echo "TAG=$(git describe --tags)" >> $GITHUB_ENV
+    
+      - name: TEST
+        run: echo ${{ github.event.action }}
     
       - name: Build & Push
         uses: docker/build-push-action@v2
