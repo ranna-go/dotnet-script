@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./build
-          file: ./build/prerestore.Dockerfile
+          file: ./build/Dockerfile
           push: true
-          tags: ghcr.io/ranna-go/dotnet-script:latest
+          tags: ghcr.io/filipw/dotnet-script:latest
